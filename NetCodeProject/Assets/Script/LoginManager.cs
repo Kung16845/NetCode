@@ -6,11 +6,74 @@ using Unity.Netcode;
 using QFSW.QC;
 using TMPro;
 public class LoginManager : MonoBehaviour
-{   
-    public TMP_InputField userNameInputField;   
+{
+    public TMP_InputField userNameInputField;
     public TMP_InputField passwordInputField;
     private bool isApproveConection = false;
     [Command("set-approve")]
+
+    public GameObject loginPanel;
+    public GameObject leavePanel;
+    public void Start()
+    {
+        NetworkManager.Singleton.OnServerStarted += HandleServerStarted;
+        NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnected;
+        NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnect;
+        loginPanel.SetActive(true);
+        leavePanel.SetActive(false);
+
+    }
+    private void OnDestroy()
+    {
+        if (NetworkManager.Singleton == null) { return; }
+        NetworkManager.Singleton.OnServerStarted -= HandleServerStarted;
+        NetworkManager.Singleton.OnClientConnectedCallback -= HandleClientConnected;
+        NetworkManager.Singleton.OnClientDisconnectCallback -= HandleClientDisconnect;
+    }
+
+    public void HandleClientStarted(ulong clientId)
+    {
+        Debug.Log("HandleClientStarted client Id = " + clientId);
+    }
+    private void HandleClientConnected(ulong clientId)
+    {   
+        Debug.Log("HandlClientconnected Client ID " + clientId);
+        if(clientId == NetworkManager.Singleton.LocalClientId)
+        {
+            loginPanel.SetActive(false);
+            leavePanel.SetActive(true);
+        }
+    }
+    public void HandleClientDisconnect(ulong clientId)
+    {
+        Debug.Log("HandleClientDisconnect client Id = " + clientId);
+        if(NetworkManager.Singleton.IsHost) {}
+        else if (NetworkManager.Singleton.IsClient)
+        {
+            Leave();
+        }
+    }
+    public void Leave()
+    {
+        // shutdown
+        // show login panel 
+        // hide leave button
+        if(NetworkManager.Singleton.IsHost)
+        {
+            NetworkManager.Singleton.Shutdown();
+            NetworkManager.Singleton.ConnectionApprovalCallback -= ApprovalCheck;
+        }
+        else if(NetworkManager.Singleton.IsClient)
+        { 
+            NetworkManager.Singleton.Shutdown();
+        }
+        loginPanel.SetActive(true);
+        leavePanel.SetActive(false); 
+    }
+    public void HandleServerStarted()
+    {
+        Debug.Log("HandleServerStarted");
+    }
     public bool SetIsApproveConnection()
     {
         isApproveConection = !isApproveConection;
@@ -25,19 +88,19 @@ public class LoginManager : MonoBehaviour
     {
         // The client identifier to be authenticated
         var clientId = request.ClientNetworkId;
-        
+
         // Additional connection data defined by user code
         var connectionData = request.Payload;
 
         int byteLength = connectionData.Length;
         bool isApproved = false;
-        if(byteLength > 0)
+        if (byteLength > 0)
         {
             string clientData = System.Text.Encoding.ASCII.GetString(connectionData, 0, byteLength);
             string hostData = userNameInputField.GetComponent<TMP_InputField>().text;
             string passwordData = passwordInputField.GetComponent<TMP_InputField>().text;
-            
-            isApproved = ApprovalConnection(clientData,hostData,passwordData);
+
+            isApproved = ApprovalConnection(clientData, hostData, passwordData);
         }
         // Your approval logic determines the following values
         response.Approved = isApproved; //
@@ -61,29 +124,29 @@ public class LoginManager : MonoBehaviour
         // response.Pending = false;
     }
     public void Client()
-    {   
+    {
         string userName = userNameInputField.GetComponent<TMP_InputField>().text;
         string password = passwordInputField.GetComponent<TMP_InputField>().text;
-        
+
         string connectionData = userName + "," + password;
-        
+
         NetworkManager.Singleton.NetworkConfig.ConnectionData = System.Text.Encoding.ASCII.GetBytes(connectionData);
-        
+
         Debug.Log("passwordClient In Client = " + password);
         NetworkManager.Singleton.StartClient();
         Debug.Log("Start Client");
     }
-    public bool ApprovalConnection(string clientData,string hostData,string passwordData)
-    {   
+    public bool ApprovalConnection(string clientData, string hostData, string passwordData)
+    {
         string[] clientDataArray = clientData.Split(',');
 
-        bool isApprove = System.String.Equals(clientDataArray[0], hostData.Trim()) ? false : true 
-        && System.String.Equals(passwordData.Trim(),clientDataArray[1]) ? true : false;
+        bool isApprove = System.String.Equals(clientDataArray[0], hostData.Trim()) ? false : true
+        && System.String.Equals(passwordData.Trim(), clientDataArray[1]) ? true : false;
         Debug.Log("isApprove = " + isApprove);
         Debug.Log("clientData = " + clientDataArray[0]);
         Debug.Log("passwordData = " + passwordData);
         Debug.Log("passwordClient = " + clientDataArray[1]);
-        
+
         Debug.Log("isApprove2 = " + isApprove);
         return isApprove;
     }

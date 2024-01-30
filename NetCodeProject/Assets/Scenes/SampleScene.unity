@@ -930,6 +930,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 227393573}
     m_Modifications:
+    - target: {fileID: 5117804263879553169, guid: 529fdedd32f244c0aa4acb45aafca252, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1086532164}
+    - target: {fileID: 5117804263879553169, guid: 529fdedd32f244c0aa4acb45aafca252, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Leave
+      objectReference: {fileID: 0}
+    - target: {fileID: 5117804263879553169, guid: 529fdedd32f244c0aa4acb45aafca252, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: LoginManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 5117804263879553182, guid: 529fdedd32f244c0aa4acb45aafca252, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1026,6 +1038,11 @@ PrefabInstance:
 --- !u!224 &322440127 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5117804263879553182, guid: 529fdedd32f244c0aa4acb45aafca252, type: 3}
+  m_PrefabInstance: {fileID: 322440126}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &322440128 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5117804263879553183, guid: 529fdedd32f244c0aa4acb45aafca252, type: 3}
   m_PrefabInstance: {fileID: 322440126}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &358250811
@@ -1480,6 +1497,11 @@ PrefabInstance:
 --- !u!224 &530705633 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1778629639558133124, guid: af7412dfa099e4ca4bc359b27432db92, type: 3}
+  m_PrefabInstance: {fileID: 530705632}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &530705634 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1778629639558133125, guid: af7412dfa099e4ca4bc359b27432db92, type: 3}
   m_PrefabInstance: {fileID: 530705632}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &705507993
@@ -2054,6 +2076,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   userNameInputField: {fileID: 1141374733}
   passwordInputField: {fileID: 1301181089}
+  loginPanel: {fileID: 530705634}
+  leavePanel: {fileID: 322440128}
 --- !u!4 &1086532165
 Transform:
   m_ObjectHideFlags: 0

@@ -4,7 +4,6 @@ using UnityEngine;
 using Unity.Netcode;
 public class MainGameManagerScript : MonoBehaviour
 {   
-    
     public void OnSeverButton()
     {
         NetworkManager.Singleton.StartServer();
