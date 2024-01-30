@@ -1,17 +1,21 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using QFSW.QC;
 using TMPro;
+
 public class LoginManager : MonoBehaviour
 {
+    public TMP_InputField chractorIDInputField;
+    public List<uint> AlternativePlayersPrefabs;
     public TMP_InputField userNameInputField;
     public TMP_InputField passwordInputField;
     private bool isApproveConection = false;
     [Command("set-approve")]
-
+    public List<int> numposition = new List<int>() { 0, 1, 2, 3, };
     public GameObject loginPanel;
     public GameObject leavePanel;
     public void Start()
@@ -36,18 +40,26 @@ public class LoginManager : MonoBehaviour
         Debug.Log("HandleClientStarted client Id = " + clientId);
     }
     private void HandleClientConnected(ulong clientId)
-    {   
+    {
         Debug.Log("HandlClientconnected Client ID " + clientId);
-        if(clientId == NetworkManager.Singleton.LocalClientId)
+        if (clientId == NetworkManager.Singleton.LocalClientId)
         {
             loginPanel.SetActive(false);
             leavePanel.SetActive(true);
+        }
+        CheckVariableInListnumposition();
+    }
+    public void CheckVariableInListnumposition()
+    {
+        foreach (int i in numposition)
+        {
+            Debug.Log(i);
         }
     }
     public void HandleClientDisconnect(ulong clientId)
     {
         Debug.Log("HandleClientDisconnect client Id = " + clientId);
-        if(NetworkManager.Singleton.IsHost) {}
+        if (NetworkManager.Singleton.IsHost) { }
         else if (NetworkManager.Singleton.IsClient)
         {
             Leave();
@@ -58,17 +70,18 @@ public class LoginManager : MonoBehaviour
         // shutdown
         // show login panel 
         // hide leave button
-        if(NetworkManager.Singleton.IsHost)
+        if (NetworkManager.Singleton.IsHost)
         {
             NetworkManager.Singleton.Shutdown();
             NetworkManager.Singleton.ConnectionApprovalCallback -= ApprovalCheck;
         }
-        else if(NetworkManager.Singleton.IsClient)
-        { 
+        else if (NetworkManager.Singleton.IsClient)
+        {
             NetworkManager.Singleton.Shutdown();
         }
         loginPanel.SetActive(true);
-        leavePanel.SetActive(false); 
+        leavePanel.SetActive(false);
+
     }
     public void HandleServerStarted()
     {
@@ -83,58 +96,121 @@ public class LoginManager : MonoBehaviour
     {
         NetworkManager.Singleton.ConnectionApprovalCallback = ApprovalCheck;
         NetworkManager.Singleton.StartHost();
+
     }
     private void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
     {
-        // The client identifier to be authenticated
         var clientId = request.ClientNetworkId;
-
-        // Additional connection data defined by user code
         var connectionData = request.Payload;
-
         int byteLength = connectionData.Length;
         bool isApproved = false;
-        if (byteLength > 0)
+
+        // Separate logic for host and client
+        if (clientId == NetworkManager.Singleton.LocalClientId)
         {
-            string clientData = System.Text.Encoding.ASCII.GetString(connectionData, 0, byteLength);
-            string hostData = userNameInputField.GetComponent<TMP_InputField>().text;
-            string passwordData = passwordInputField.GetComponent<TMP_InputField>().text;
+            // Host logic
+            isApproved = true; // Host is always approved
 
-            isApproved = ApprovalConnection(clientData, hostData, passwordData);
+            // Host can select the prefab based on the character ID input field
+            int hostCharacterId;
+            if (int.TryParse(chractorIDInputField.text, out hostCharacterId) && hostCharacterId >= 0 && hostCharacterId < AlternativePlayersPrefabs.Count)
+            {
+                response.PlayerPrefabHash = new Nullable<uint>(AlternativePlayersPrefabs[hostCharacterId]);
+            }
+            else
+            {
+                response.PlayerPrefabHash = new Nullable<uint>(AlternativePlayersPrefabs[0]); // Default to first prefab if input is invalid
+            }
         }
-        // Your approval logic determines the following values
-        response.Approved = isApproved; //
-        response.CreatePlayerObject = true;
+        else
+        {
+            // Client logic
+            if (byteLength > 0)
+            {
+                string clientData = System.Text.Encoding.ASCII.GetString(connectionData, 0, byteLength);
+                string hostData = userNameInputField.text.Trim();
+                string passwordData = passwordInputField.text.Trim();
 
-        // // The Prefab hash value of the NetworkPrefab, if null the default NetworkManager player Prefab is used
-        // response.PlayerPrefabHash = null;
+                isApproved = ApprovalConnection(clientData, hostData, passwordData);
+                string[] clientDatas = clientData.Split(",");
+                response.PlayerPrefabHash = new Nullable<uint>(AlternativePlayersPrefabs[int.Parse(clientDatas[2])]);
+            }
 
-        // // Position to spawn the player object (if null it uses default of Vector3.zero)
-        // response.Position = Vector3.zero;
+            // Client cannot select prefab; it's assigned by the host
+            // Default to first prefab
+        }
 
-        // // Rotation to spawn the player object (if null it uses the default of Quaternion.identity)
-        // response.Rotation = Quaternion.identity;
+        response.Approved = isApproved;
+        response.CreatePlayerObject = isApproved;
+        SetSpawnLocation(clientId, response);
 
-        // // If response.Approved is false, you can provide a message that explains the reason why via ConnectionApprovalResponse.Reason
-        // // On the client-side, NetworkManager.DisconnectReason will be populated with this message via DisconnectReasonMessage
-        // response.Reason = "Some reason for not approving the client";
+        if (!isApproved)
+        {
+            response.Reason = "Invalid login credentials or character ID";
+        }
 
-        // // If additional approval steps are needed, set this to true until the additional steps are complete
-        // // once it transitions from true to false the connection approval response will be processed.
-        // response.Pending = false;
+        response.Pending = false;
+    }
+    public void SelectPrefab(string num)
+    {
+        chractorIDInputField.GetComponent<TMP_InputField>().text = num;
     }
     public void Client()
     {
         string userName = userNameInputField.GetComponent<TMP_InputField>().text;
         string password = passwordInputField.GetComponent<TMP_InputField>().text;
+        string chractorID = chractorIDInputField.GetComponent<TMP_InputField>().text;
 
-        string connectionData = userName + "," + password;
+        // string[] inputFiels = {userName,password ,chractorID};
+        // string clientData = HelperScript.CombineString(inputFiels);
+
+        string connectionData = userName + "," + password + "," + chractorID;
 
         NetworkManager.Singleton.NetworkConfig.ConnectionData = System.Text.Encoding.ASCII.GetBytes(connectionData);
 
         Debug.Log("passwordClient In Client = " + password);
         NetworkManager.Singleton.StartClient();
         Debug.Log("Start Client");
+    }
+    public void SetSpawnLocation(ulong clientId
+    , NetworkManager.ConnectionApprovalResponse response)
+    {
+        Vector3 spawnPos = Vector3.zero;
+        Quaternion spawnRot = Quaternion.identity;
+        //server 
+        // if (clientId == NetworkManager.Singleton.LocalClientId)
+        // {
+        //     spawnPos = new Vector3(-2f, 0f, 0f);
+        //     spawnRot = Quaternion.Euler(0f, 135f, 0f);
+        // }
+        // else
+        // {
+        int numRandom = UnityEngine.Random.Range(0, numposition.Count);
+        int selectedNumber = numposition.ElementAt(numRandom);
+        switch (selectedNumber)
+        {
+            case 0:
+                spawnPos = new Vector3(-2f, 0f, 0f); spawnRot = Quaternion.Euler(0f, 135f, 0f);
+                numposition.Remove(0);
+                Debug.Log(numposition);
+                break;
+            case 1:
+                spawnPos = new Vector3(0f, 0f, 0f); spawnRot = Quaternion.Euler(0f, 180f, 0f);
+                numposition.Remove(1);
+                break;
+            case 2:
+                spawnPos = new Vector3(2f, 0f, 0f); spawnRot = Quaternion.Euler(0f, 225f, 0f);
+                numposition.Remove(2);
+                break;
+            case 3:
+                spawnPos = new Vector3(4f, 0f, 0f); spawnRot = Quaternion.Euler(0f, 270f, 0f);
+                numposition.Remove(3);
+                break;
+        }
+        // }
+        CheckVariableInListnumposition();
+        response.Position = spawnPos;
+        response.Rotation = spawnRot;
     }
     public bool ApprovalConnection(string clientData, string hostData, string passwordData)
     {
@@ -146,8 +222,8 @@ public class LoginManager : MonoBehaviour
         Debug.Log("clientData = " + clientDataArray[0]);
         Debug.Log("passwordData = " + passwordData);
         Debug.Log("passwordClient = " + clientDataArray[1]);
-
         Debug.Log("isApprove2 = " + isApprove);
+
         return isApprove;
     }
 }
