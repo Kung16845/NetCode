@@ -912,7 +912,7 @@ GameObject:
   - component: {fileID: 227393570}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: Untagged
+  m_TagString: MainCanvas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3356,6 +3356,7 @@ MonoBehaviour:
   numposition: 00000000010000000200000003000000
   loginPanel: {fileID: 530705634}
   leavePanel: {fileID: 322440128}
+  nameClient: 
 --- !u!4 &1086532165
 Transform:
   m_ObjectHideFlags: 0

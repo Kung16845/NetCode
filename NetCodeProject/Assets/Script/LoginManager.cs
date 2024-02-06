@@ -18,6 +18,7 @@ public class LoginManager : MonoBehaviour
     public List<int> numposition = new List<int>() { 0, 1, 2, 3, };
     public GameObject loginPanel;
     public GameObject leavePanel;
+    public string nameClient;
     public void Start()
     {
         NetworkManager.Singleton.OnServerStarted += HandleServerStarted;
@@ -121,6 +122,8 @@ public class LoginManager : MonoBehaviour
             {
                 response.PlayerPrefabHash = new Nullable<uint>(AlternativePlayersPrefabs[0]); // Default to first prefab if input is invalid
             }
+
+            
         }
         else
         {
@@ -133,6 +136,8 @@ public class LoginManager : MonoBehaviour
 
                 isApproved = ApprovalConnection(clientData, hostData, passwordData);
                 string[] clientDatas = clientData.Split(",");
+                nameClient = clientDatas[0];
+                // userNameInputField.text = clientDatas[0]; 
                 response.PlayerPrefabHash = new Nullable<uint>(AlternativePlayersPrefabs[int.Parse(clientDatas[2])]);
             }
 
@@ -160,7 +165,7 @@ public class LoginManager : MonoBehaviour
         string userName = userNameInputField.GetComponent<TMP_InputField>().text;
         string password = passwordInputField.GetComponent<TMP_InputField>().text;
         string chractorID = chractorIDInputField.GetComponent<TMP_InputField>().text;
-
+        // userNameInputField.text = userName; 
         // string[] inputFiels = {userName,password ,chractorID};
         // string clientData = HelperScript.CombineString(inputFiels);
 
@@ -191,20 +196,20 @@ public class LoginManager : MonoBehaviour
         {
             case 0:
                 spawnPos = new Vector3(-2f, 0f, 0f); spawnRot = Quaternion.Euler(0f, 135f, 0f);
-                numposition.Remove(0);
+                // numposition.Remove(0);
                 Debug.Log(numposition);
                 break;
             case 1:
                 spawnPos = new Vector3(0f, 0f, 0f); spawnRot = Quaternion.Euler(0f, 180f, 0f);
-                numposition.Remove(1);
+                // numposition.Remove(1);
                 break;
             case 2:
                 spawnPos = new Vector3(2f, 0f, 0f); spawnRot = Quaternion.Euler(0f, 225f, 0f);
-                numposition.Remove(2);
+                // numposition.Remove(2);
                 break;
             case 3:
                 spawnPos = new Vector3(4f, 0f, 0f); spawnRot = Quaternion.Euler(0f, 270f, 0f);
-                numposition.Remove(3);
+                // numposition.Remove(3);
                 break;
         }
         // }
