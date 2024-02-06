@@ -19,6 +19,8 @@ public class LoginManager : MonoBehaviour
     public GameObject loginPanel;
     public GameObject leavePanel;
     public string nameClient;
+    public Material materialEyeBase;
+    public Material materialEyeRed;
     public void Start()
     {
         NetworkManager.Singleton.OnServerStarted += HandleServerStarted;
@@ -123,7 +125,7 @@ public class LoginManager : MonoBehaviour
                 response.PlayerPrefabHash = new Nullable<uint>(AlternativePlayersPrefabs[0]); // Default to first prefab if input is invalid
             }
 
-            
+
         }
         else
         {

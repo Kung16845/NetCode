@@ -3350,13 +3350,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chractorIDInputField: {fileID: 1022984479}
-  AlternativePlayersPrefabs: 2885179c6e3fdda1
+  AlternativePlayersPrefabs: b9124f136e3fdda1
   userNameInputField: {fileID: 1141374733}
   passwordInputField: {fileID: 1301181089}
   numposition: 00000000010000000200000003000000
   loginPanel: {fileID: 530705634}
   leavePanel: {fileID: 322440128}
   nameClient: 
+  materialEyeBase: {fileID: 2100000, guid: ed46e3e5aab72ed44a1078079b39edcd, type: 2}
+  materialEyeRed: {fileID: 2100000, guid: 136c1802786b12b4982e432cd4c7cf0c, type: 2}
 --- !u!4 &1086532165
 Transform:
   m_ObjectHideFlags: 0
@@ -4227,7 +4229,7 @@ MonoBehaviour:
   NetworkConfig:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 1868190305}
-    PlayerPrefab: {fileID: 2816634173617189910, guid: af4edc36a5bb2d249b8f0f8a4f908617, type: 3}
+    PlayerPrefab: {fileID: 6168981238642625158, guid: af4edc36a5bb2d249b8f0f8a4f908617, type: 3}
     Prefabs:
       NetworkPrefabsLists:
       - {fileID: 11400000, guid: 299693394409a35489892bf95dc9e1c9, type: 2}

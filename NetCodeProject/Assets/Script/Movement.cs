@@ -4,6 +4,9 @@ using UnityEngine;
 using Unity.Netcode;
 using TMPro;
 using Unity.Collections;
+using Unity.VisualScripting;
+using System.Linq;
+using System;
 public class Movement : NetworkBehaviour
 {
    public Rigidbody rb;
@@ -12,6 +15,7 @@ public class Movement : NetworkBehaviour
    public TMP_Text namePrefab;
    private TMP_Text nameLable;
    public string nameHost;
+
    private NetworkVariable<int> posX = new NetworkVariable<int>(
       0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
    public struct NetworkString : INetworkSerializable
@@ -30,13 +34,17 @@ public class Movement : NetworkBehaviour
    }
 
    public NetworkVariable<NetworkString> playerNameA = new NetworkVariable<NetworkString>(
-      new NetworkString { info = "Player"}
-      ,NetworkVariableReadPermission.Everyone,NetworkVariableWritePermission.Owner );
+      new NetworkString { info = "Player" }
+      , NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
    public NetworkVariable<NetworkString> playerNameB = new NetworkVariable<NetworkString>(
-      new NetworkString { info = "Player"}
-      ,NetworkVariableReadPermission.Everyone,NetworkVariableWritePermission.Owner );
-   
+      new NetworkString { info = "Player" }
+      , NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+   public NetworkVariable<bool> changeColorRed = new NetworkVariable<bool>(
+   false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
+
    public LoginManager loginManagerScript;
+
    public override void OnNetworkSpawn()
    {
       GameObject canvas = GameObject.FindWithTag("MainCanvas");
@@ -50,20 +58,27 @@ public class Movement : NetworkBehaviour
       // {  
       //    var LoginManager = FindObjectOfType<LoginManager>();
       //    playerNameA.Value = new NetworkString() {info = new FixedString32Bytes(LoginManager.userNameInputField.text)};
-         
+
       //    playerNameB.Value = new NetworkString() {info = new FixedString32Bytes(LoginManager.nameClient)};
       // }
-      if(IsOwner)
+      if (IsOwner)
       {
          loginManagerScript = GameObject.FindObjectOfType<LoginManager>();
-         if(loginManagerScript != null)
+         if (loginManagerScript != null)
          {
             string name = loginManagerScript.userNameInputField.text;
-            if(IsOwnedByServer) {playerNameA.Value = name;}
-            else {playerNameB.Value = name;}
+            if (IsOwnedByServer) { playerNameA.Value = name; }
+            else { playerNameB.Value = name; }
          }
+
+
+
+
       }
    }
+   public bool isChangingColor = false;
+   public GameObject eyeRight;
+   public GameObject eyeLeft;
    private void Update()
    {
       Vector3 nameLabelPos = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 2.5f, 0));
@@ -72,13 +87,40 @@ public class Movement : NetworkBehaviour
       if (IsOwner)
       {
          posX.Value = (int)System.Math.Ceiling(transform.position.x);
+         if (Input.GetKey(KeyCode.F) && !isChangingColor)
+         {
+            Debug.Log("Change Color");
+            if (changeColorRed.Value == false)
+            {
+               changeColorRed.Value = true;
+               eyeRight.GetComponent<Renderer>().material = loginManagerScript.materialEyeRed;
+               eyeLeft.GetComponent<Renderer>().material = loginManagerScript.materialEyeRed;
+
+            }
+            else
+            {
+               changeColorRed.Value = false;
+               eyeRight.GetComponent<Renderer>().material = loginManagerScript.materialEyeBase;
+               eyeLeft.GetComponent<Renderer>().material = loginManagerScript.materialEyeBase;
+
+               
+            }
+            isChangingColor = true;
+            StartCoroutine(delatTime());
+
+         }
       }
       UpdatePlayerinfo();
    }
+   IEnumerator delatTime()
+   {
+      yield return new WaitForSeconds(2.0f);
+      isChangingColor = false;
+   }
    private void UpdatePlayerinfo()
    {
-      if(IsOwnedByServer) {nameLable.text = playerNameA.Value.ToString();}
-      else {nameLable.text = playerNameB.Value.ToString();}
+      if (IsOwnedByServer) { nameLable.text = playerNameA.Value.ToString(); }
+      else { nameLable.text = playerNameB.Value.ToString(); }
    }
 
    public override void OnDestroy()
