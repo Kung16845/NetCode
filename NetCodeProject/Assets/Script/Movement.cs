@@ -61,18 +61,15 @@ public class Movement : NetworkBehaviour
 
       //    playerNameB.Value = new NetworkString() {info = new FixedString32Bytes(LoginManager.nameClient)};
       // }
+      
       if (IsOwner)
       {
-         loginManagerScript = GameObject.FindObjectOfType<LoginManager>();
          if (loginManagerScript != null)
          {
             string name = loginManagerScript.userNameInputField.text;
             if (IsOwnedByServer) { playerNameA.Value = name; }
             else { playerNameB.Value = name; }
          }
-
-
-
 
       }
    }
@@ -103,20 +100,50 @@ public class Movement : NetworkBehaviour
                eyeRight.GetComponent<Renderer>().material = loginManagerScript.materialEyeBase;
                eyeLeft.GetComponent<Renderer>().material = loginManagerScript.materialEyeBase;
 
-               
+
             }
             isChangingColor = true;
             StartCoroutine(delatTime());
 
          }
       }
+
       UpdatePlayerinfo();
+      UpdateMaterial();
    }
    IEnumerator delatTime()
    {
       yield return new WaitForSeconds(2.0f);
       isChangingColor = false;
    }
+   private void UpdateMaterial()
+   {
+      if (loginManagerScript == null)
+      {
+         Debug.LogError("Login Manager Script is not assigned!");
+         return;
+      }
+
+      Material eyeMaterial = changeColorRed.Value ? loginManagerScript.materialEyeRed : loginManagerScript.materialEyeBase;
+
+      if (IsOwnedByServer)
+      {
+         eyeRight.GetComponent<Renderer>().material = eyeMaterial;
+         eyeLeft.GetComponent<Renderer>().material = eyeMaterial;
+         Debug.Log("Host : " + changeColorRed.Value);
+      }
+      else
+      {
+         if (!IsLocalPlayer)
+         {
+            eyeRight.GetComponent<Renderer>().material = eyeMaterial;
+            eyeLeft.GetComponent<Renderer>().material = eyeMaterial;
+         }
+         Debug.Log("Client : " + changeColorRed.Value);
+      }
+   }
+
+
    private void UpdatePlayerinfo()
    {
       if (IsOwnedByServer) { nameLable.text = playerNameA.Value.ToString(); }
