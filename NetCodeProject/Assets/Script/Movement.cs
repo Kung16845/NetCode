@@ -61,7 +61,7 @@ public class Movement : NetworkBehaviour
 
       //    playerNameB.Value = new NetworkString() {info = new FixedString32Bytes(LoginManager.nameClient)};
       // }
-      
+      loginManagerScript = FindObjectOfType<LoginManager>();
       if (IsOwner)
       {
          if (loginManagerScript != null)
@@ -158,6 +158,7 @@ public class Movement : NetworkBehaviour
    void Start()
    {
       rb = this.GetComponent<Rigidbody>();
+      
    }
    private void FixedUpdate()
    {
