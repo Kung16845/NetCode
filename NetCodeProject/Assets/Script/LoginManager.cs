@@ -18,6 +18,7 @@ public class LoginManager : MonoBehaviour
     public List<int> numposition = new List<int>() { 0, 1, 2, 3, };
     public GameObject loginPanel;
     public GameObject leavePanel;
+    public GameObject scorePanel;
     public string nameClient;
     public Material materialEyeBase;
     public Material materialEyeRed;
@@ -26,9 +27,23 @@ public class LoginManager : MonoBehaviour
         NetworkManager.Singleton.OnServerStarted += HandleServerStarted;
         NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnected;
         NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnect;
-        loginPanel.SetActive(true);
-        leavePanel.SetActive(false);
+        SetUIVIsible(false);
 
+    }
+    public void SetUIVIsible(bool isUserLogin)
+    {
+        if (isUserLogin)
+        {
+            loginPanel.SetActive(false);
+            leavePanel.SetActive(true);
+            scorePanel.SetActive(true);
+        }
+        else
+        {
+            loginPanel.SetActive(true);
+            leavePanel.SetActive(false);
+            scorePanel.SetActive(false);
+        }
     }
     private void OnDestroy()
     {
@@ -47,8 +62,7 @@ public class LoginManager : MonoBehaviour
         Debug.Log("HandlClientconnected Client ID " + clientId);
         if (clientId == NetworkManager.Singleton.LocalClientId)
         {
-            loginPanel.SetActive(false);
-            leavePanel.SetActive(true);
+            SetUIVIsible(true);
         }
         CheckVariableInListnumposition();
     }
@@ -82,8 +96,7 @@ public class LoginManager : MonoBehaviour
         {
             NetworkManager.Singleton.Shutdown();
         }
-        loginPanel.SetActive(true);
-        leavePanel.SetActive(false);
+        SetUIVIsible(false);
 
     }
     public void HandleServerStarted()

@@ -104,12 +104,32 @@ public class Movement : NetworkBehaviour
             }
             isChangingColor = true;
             StartCoroutine(delatTime());
-
          }
+         if(Input.GetKeyDown(KeyCode.K))
+         {
+            TestServerRpc("Hello",new ServerRpcParams());
+         }
+         if(Input.GetKeyDown(KeyCode.L))
+         {
+            ClientRpcSendParams clientRpcSendParams = new ClientRpcSendParams{TargetClientIds = new List<ulong> {1}};
+            ClientRpcParams clientRpcParams = new ClientRpcParams {Send = clientRpcSendParams};
+            TestClientRpc("Hi, this is server ",clientRpcParams);
+         }
+         
       }
 
       UpdatePlayerinfo();
       UpdateMaterial();
+   }
+   [ClientRpc]
+   private void TestClientRpc(string msg, ClientRpcParams clientRpcParams)
+   {
+      Debug.Log("Msg from server = " + msg);
+   }
+   [ServerRpc]
+   private void TestServerRpc(string msg,ServerRpcParams serverRpcParams)
+   {
+      Debug.Log("Test server rpc from client = " + OwnerClientId);
    }
    IEnumerator delatTime()
    {
@@ -130,7 +150,7 @@ public class Movement : NetworkBehaviour
       {
          eyeRight.GetComponent<Renderer>().material = eyeMaterial;
          eyeLeft.GetComponent<Renderer>().material = eyeMaterial;
-         Debug.Log("Host : " + changeColorRed.Value);
+         // Debug.Log("Host : " + changeColorRed.Value);
       }
       else
       {
@@ -139,7 +159,7 @@ public class Movement : NetworkBehaviour
             eyeRight.GetComponent<Renderer>().material = eyeMaterial;
             eyeLeft.GetComponent<Renderer>().material = eyeMaterial;
          }
-         Debug.Log("Client : " + changeColorRed.Value);
+         // Debug.Log("Client : " + changeColorRed.Value);
       }
    }
 
@@ -158,7 +178,7 @@ public class Movement : NetworkBehaviour
    void Start()
    {
       rb = this.GetComponent<Rigidbody>();
-      
+
    }
    private void FixedUpdate()
    {
