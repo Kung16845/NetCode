@@ -105,17 +105,17 @@ public class Movement : NetworkBehaviour
             isChangingColor = true;
             StartCoroutine(delatTime());
          }
-         if(Input.GetKeyDown(KeyCode.K))
+         if (Input.GetKeyDown(KeyCode.K))
          {
-            TestServerRpc("Hello",new ServerRpcParams());
+            TestServerRpc("Hello", new ServerRpcParams());
          }
-         if(Input.GetKeyDown(KeyCode.L))
+         if (Input.GetKeyDown(KeyCode.L))
          {
-            ClientRpcSendParams clientRpcSendParams = new ClientRpcSendParams{TargetClientIds = new List<ulong> {1}};
-            ClientRpcParams clientRpcParams = new ClientRpcParams {Send = clientRpcSendParams};
-            TestClientRpc("Hi, this is server ",clientRpcParams);
+            ClientRpcSendParams clientRpcSendParams = new ClientRpcSendParams { TargetClientIds = new List<ulong> { 1 } };
+            ClientRpcParams clientRpcParams = new ClientRpcParams { Send = clientRpcSendParams };
+            TestClientRpc("Hi, this is server ", clientRpcParams);
          }
-         
+
       }
 
       UpdatePlayerinfo();
@@ -127,7 +127,7 @@ public class Movement : NetworkBehaviour
       Debug.Log("Msg from server = " + msg);
    }
    [ServerRpc]
-   private void TestServerRpc(string msg,ServerRpcParams serverRpcParams)
+   private void TestServerRpc(string msg, ServerRpcParams serverRpcParams)
    {
       Debug.Log("Test server rpc from client = " + OwnerClientId);
    }
@@ -191,5 +191,14 @@ public class Movement : NetworkBehaviour
          rb.MovePosition(rb.position + this.transform.forward * translation);
          rb.MoveRotation(rb.rotation * turn);
       }
+   }
+   private void OnEnable()
+   {
+      if(nameLable != null)
+         nameLable.enabled = true;
+   }
+   private void OnDisable() {
+      if(nameLable != null)
+         nameLable.enabled = false;
    }
 }

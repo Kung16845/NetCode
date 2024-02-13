@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 6430291455837665886}
   - component: {fileID: 1121381399760901435}
   - component: {fileID: 3342309906569143317}
-  - component: {fileID: 8045262142441928827}
   - component: {fileID: 6206321454997717304}
+  - component: {fileID: 8045262142441928827}
   - component: {fileID: 1015618062533592695}
   - component: {fileID: 7478576549916550698}
   - component: {fileID: 3222093560476962392}
@@ -89,29 +89,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!114 &8045262142441928827
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2816634173617189910}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 984d80807dc8cb1479c862a6ea920c96, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb: {fileID: 0}
-  speed: 0.5
-  rotationspeed: 10
-  namePrefab: {fileID: 603351325977892307, guid: fcc3b41e4c06aa44ea3ae103cc80cdb1, type: 3}
-  nameHost: 
-  changeColorRed:
-    m_InternalValue: 0
-  loginManagerScript: {fileID: 0}
-  isChangingColor: 0
-  eyeRight: {fileID: 6220786972350099514}
-  eyeLeft: {fileID: 5584681898285430288}
 --- !u!114 &6206321454997717304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,6 +120,29 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
+--- !u!114 &8045262142441928827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2816634173617189910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 984d80807dc8cb1479c862a6ea920c96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 0}
+  speed: 0.5
+  rotationspeed: 10
+  namePrefab: {fileID: 603351325977892307, guid: fcc3b41e4c06aa44ea3ae103cc80cdb1, type: 3}
+  nameHost: 
+  changeColorRed:
+    m_InternalValue: 0
+  loginManagerScript: {fileID: 0}
+  isChangingColor: 0
+  eyeRight: {fileID: 6220786972350099514}
+  eyeLeft: {fileID: 5584681898285430288}
 --- !u!114 &1015618062533592695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,6 +183,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd73cd2555d832b488f71553e8fee12e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scripts:
+  - {fileID: 8045262142441928827}
+  - {fileID: 7478576549916550698}
 --- !u!1 &3638336252833830480
 GameObject:
   m_ObjectHideFlags: 0
