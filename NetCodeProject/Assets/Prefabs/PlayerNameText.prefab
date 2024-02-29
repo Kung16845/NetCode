@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1385488245349776569}
   - component: {fileID: 7845097353283816510}
   - component: {fileID: 603351325977892307}
+  - component: {fileID: -1212813133957438733}
   - component: {fileID: -7704136106289740076}
   m_Layer: 5
   m_Name: PlayerNameText
@@ -136,6 +137,27 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &-1212813133957438733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7907808694821000275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 2633150171
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!114 &-7704136106289740076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,3 +170,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f9facd99b6fdd843a06db276984db05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bombPrefab: {fileID: 0}
+  spawnedBomb: []

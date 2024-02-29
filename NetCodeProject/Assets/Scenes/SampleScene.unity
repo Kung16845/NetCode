@@ -474,7 +474,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 224130951485110974, guid: 9ed2a051c32b4fe47a5e4fb95c20b03f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000061035156
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224166536479716514, guid: 9ed2a051c32b4fe47a5e4fb95c20b03f, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1673,7 +1673,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 0
+          m_StringArgument: 3
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &442914927
@@ -1705,7 +1705,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 3
 --- !u!222 &442914928
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3317,6 +3317,7 @@ GameObject:
   - component: {fileID: 1075657405}
   - component: {fileID: 1075657404}
   - component: {fileID: 1075657403}
+  - component: {fileID: 1075657408}
   - component: {fileID: 1075657407}
   m_Layer: 5
   m_Name: Button
@@ -3442,6 +3443,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delayBrforeDestroy: 2
   ps: {fileID: 0}
+--- !u!114 &1075657408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075657402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1723142880
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &1086532163
 GameObject:
   m_ObjectHideFlags: 0
@@ -3472,7 +3494,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chractorIDInputField: {fileID: 1022984479}
-  AlternativePlayersPrefabs: b9124f136e3fdda1
+  AlternativePlayersPrefabs: b9124f136e3fdda140392648aef985b2
   userNameInputField: {fileID: 1141374733}
   passwordInputField: {fileID: 1301181089}
   numposition: 00000000010000000200000003000000
@@ -3480,8 +3502,6 @@ MonoBehaviour:
   leavePanel: {fileID: 322440128}
   scorePanel: {fileID: 1331398107}
   nameClient: 
-  materialEyeBase: {fileID: 2100000, guid: ed46e3e5aab72ed44a1078079b39edcd, type: 2}
-  materialEyeRed: {fileID: 2100000, guid: 136c1802786b12b4982e432cd4c7cf0c, type: 2}
 --- !u!4 &1086532165
 Transform:
   m_ObjectHideFlags: 0
@@ -3859,7 +3879,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4394832978940335744, guid: b5992d14543bfad468ab5118b175f6f5, type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 1331398111}
   m_SourcePrefab: {fileID: 100100000, guid: b5992d14543bfad468ab5118b175f6f5, type: 3}
 --- !u!224 &1331398106 stripped
 RectTransform:
@@ -3871,6 +3894,27 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4394832978940335744, guid: b5992d14543bfad468ab5118b175f6f5, type: 3}
   m_PrefabInstance: {fileID: 1331398105}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1331398111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331398107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 2580372781
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &1406826870
 GameObject:
   m_ObjectHideFlags: 0
@@ -4339,7 +4383,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 1
+          m_StringArgument: 2
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1680674468
@@ -4576,7 +4620,7 @@ MonoBehaviour:
   NetworkConfig:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 1868190305}
-    PlayerPrefab: {fileID: 6168981238642625158, guid: af4edc36a5bb2d249b8f0f8a4f908617, type: 3}
+    PlayerPrefab: {fileID: 3502385510538324107, guid: 76909958f0d548840ae684777854f6da, type: 3}
     Prefabs:
       NetworkPrefabsLists:
       - {fileID: 11400000, guid: 299693394409a35489892bf95dc9e1c9, type: 2}
@@ -4597,7 +4641,7 @@ MonoBehaviour:
     EnableNetworkLogs: 1
     OldPrefabList: []
   RunInBackground: 1
-  LogLevel: 0
+  LogLevel: 1
 --- !u!4 &1868190307
 Transform:
   m_ObjectHideFlags: 0

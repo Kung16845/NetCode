@@ -20,8 +20,8 @@ public class LoginManager : MonoBehaviour
     public GameObject leavePanel;
     public GameObject scorePanel;
     public string nameClient;
-    public Material materialEyeBase;
-    public Material materialEyeRed;
+    // public Material materialEyeBase;
+    // public Material materialEyeRed;
     public void Start()
     {
         NetworkManager.Singleton.OnServerStarted += HandleServerStarted;
@@ -210,20 +210,20 @@ public class LoginManager : MonoBehaviour
         switch (selectedNumber)
         {
             case 0:
-                spawnPos = new Vector3(-2f, 0f, 0f); spawnRot = Quaternion.Euler(0f, 135f, 0f);
+                spawnPos = new Vector3(-2f, 1f, 0f); spawnRot = Quaternion.Euler(0f, 135f, 0f);
                 // numposition.Remove(0);
                 Debug.Log(numposition);
                 break;
             case 1:
-                spawnPos = new Vector3(0f, 0f, 0f); spawnRot = Quaternion.Euler(0f, 180f, 0f);
+                spawnPos = new Vector3(0f, 1f, 0f); spawnRot = Quaternion.Euler(0f, 180f, 0f);
                 // numposition.Remove(1);
                 break;
             case 2:
-                spawnPos = new Vector3(2f, 0f, 0f); spawnRot = Quaternion.Euler(0f, 225f, 0f);
+                spawnPos = new Vector3(2f, 1f, 0f); spawnRot = Quaternion.Euler(0f, 225f, 0f);
                 // numposition.Remove(2);
                 break;
             case 3:
-                spawnPos = new Vector3(4f, 0f, 0f); spawnRot = Quaternion.Euler(0f, 270f, 0f);
+                spawnPos = new Vector3(4f, 1f, 0f); spawnRot = Quaternion.Euler(0f, 270f, 0f);
                 // numposition.Remove(3);
                 break;
         }

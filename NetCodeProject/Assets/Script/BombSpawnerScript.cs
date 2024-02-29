@@ -2,15 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 public class BombSpawnerScript : NetworkBehaviour
 {
     public GameObject bombPrefab;
     public List<GameObject> spawnedBomb = new List<GameObject>();
-    private void Update()
+    public OwnerNetworkAnimationScript ownerNetworkAnimationScript;
+    void Start() {
+        ownerNetworkAnimationScript = GetComponent<OwnerNetworkAnimationScript>();
+    }
+    void Update()
     {
         if (!IsOwner) return;
+        
         if (Input.GetKeyDown(KeyCode.E))
         {
+            ownerNetworkAnimationScript.SetTrigger("Pickup");
             SpawnBompServerRpc();
         }
 

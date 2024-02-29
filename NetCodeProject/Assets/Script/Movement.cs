@@ -84,27 +84,27 @@ public class Movement : NetworkBehaviour
       if (IsOwner)
       {
          posX.Value = (int)System.Math.Ceiling(transform.position.x);
-         if (Input.GetKey(KeyCode.F) && !isChangingColor)
-         {
-            Debug.Log("Change Color");
-            if (changeColorRed.Value == false)
-            {
-               changeColorRed.Value = true;
-               eyeRight.GetComponent<Renderer>().material = loginManagerScript.materialEyeRed;
-               eyeLeft.GetComponent<Renderer>().material = loginManagerScript.materialEyeRed;
+         // if (Input.GetKey(KeyCode.F) && !isChangingColor)
+         // {
+         //    Debug.Log("Change Color");
+         //    if (changeColorRed.Value == false)
+         //    {
+         //       changeColorRed.Value = true;
+         //       eyeRight.GetComponent<Renderer>().material = loginManagerScript.materialEyeRed;
+         //       eyeLeft.GetComponent<Renderer>().material = loginManagerScript.materialEyeRed;
 
-            }
-            else
-            {
-               changeColorRed.Value = false;
-               eyeRight.GetComponent<Renderer>().material = loginManagerScript.materialEyeBase;
-               eyeLeft.GetComponent<Renderer>().material = loginManagerScript.materialEyeBase;
+         //    }
+         //    else
+         //    {
+         //       changeColorRed.Value = false;
+         //       eyeRight.GetComponent<Renderer>().material = loginManagerScript.materialEyeBase;
+         //       eyeLeft.GetComponent<Renderer>().material = loginManagerScript.materialEyeBase;
 
 
-            }
-            isChangingColor = true;
-            StartCoroutine(delatTime());
-         }
+         //    }
+         //    isChangingColor = true;
+         //    StartCoroutine(delatTime());
+         // }
          if (Input.GetKeyDown(KeyCode.K))
          {
             TestServerRpc("Hello", new ServerRpcParams());
@@ -144,23 +144,23 @@ public class Movement : NetworkBehaviour
          return;
       }
 
-      Material eyeMaterial = changeColorRed.Value ? loginManagerScript.materialEyeRed : loginManagerScript.materialEyeBase;
+      // Material eyeMaterial = changeColorRed.Value ? loginManagerScript.materialEyeRed : loginManagerScript.materialEyeBase;
 
-      if (IsOwnedByServer)
-      {
-         eyeRight.GetComponent<Renderer>().material = eyeMaterial;
-         eyeLeft.GetComponent<Renderer>().material = eyeMaterial;
-         // Debug.Log("Host : " + changeColorRed.Value);
-      }
-      else
-      {
-         if (!IsLocalPlayer)
-         {
-            eyeRight.GetComponent<Renderer>().material = eyeMaterial;
-            eyeLeft.GetComponent<Renderer>().material = eyeMaterial;
-         }
-         // Debug.Log("Client : " + changeColorRed.Value);
-      }
+      // if (IsOwnedByServer)
+      // {
+      //    eyeRight.GetComponent<Renderer>().material = eyeMaterial;
+      //    eyeLeft.GetComponent<Renderer>().material = eyeMaterial;
+      //    // Debug.Log("Host : " + changeColorRed.Value);
+      // }
+      // else
+      // {
+      //    if (!IsLocalPlayer)
+      //    {
+      //       eyeRight.GetComponent<Renderer>().material = eyeMaterial;
+      //       eyeLeft.GetComponent<Renderer>().material = eyeMaterial;
+      //    }
+      //    // Debug.Log("Client : " + changeColorRed.Value);
+      // }
    }
 
 
@@ -182,15 +182,15 @@ public class Movement : NetworkBehaviour
    }
    private void FixedUpdate()
    {
-      if (IsOwner)
-      {
-         float translation = Input.GetAxis("Vertical") * speed;
-         float rotation = Input.GetAxis("Horizontal") * rotationspeed;
-         translation *= Time.deltaTime;
-         Quaternion turn = Quaternion.Euler(0f, rotation, 0f);
-         rb.MovePosition(rb.position + this.transform.forward * translation);
-         rb.MoveRotation(rb.rotation * turn);
-      }
+      // if (IsOwner)
+      // {
+      //    float translation = Input.GetAxis("Vertical") * speed;
+      //    float rotation = Input.GetAxis("Horizontal") * rotationspeed;
+      //    translation *= Time.deltaTime;
+      //    Quaternion turn = Quaternion.Euler(0f, rotation, 0f);
+      //    rb.MovePosition(rb.position + this.transform.forward * translation);
+      //    rb.MoveRotation(rb.rotation * turn);
+      // }
    }
    private void OnEnable()
    {
