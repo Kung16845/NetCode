@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
 using QFSW.QC;
 using TMPro;
 
@@ -13,6 +14,9 @@ public class LoginManager : MonoBehaviour
     public List<uint> AlternativePlayersPrefabs;
     public TMP_InputField userNameInputField;
     public TMP_InputField passwordInputField;
+    public string ipAddress = "127.0.0.1";
+    public TMP_InputField ipAddressInputField;
+    UnityTransport transport;
     private bool isApproveConection = false;
     [Command("set-approve")]
     public List<int> numposition = new List<int>() { 0, 1, 2, 3, };
@@ -108,11 +112,23 @@ public class LoginManager : MonoBehaviour
         isApproveConection = !isApproveConection;
         return isApproveConection;
     }
-    public void Host()
+    private void SetIpAddress()
     {
+        transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+        ipAddress = ipAddressInputField.GetComponent<TMP_InputField>().text;
+        transport.ConnectionData.Address = ipAddress;
+
+    }
+    public async void Host()
+    {   
+        // SetIpAddress();
+        if(RelayManagerScript.Instance.IsRelayEnabled)
+        {
+            await RelayManagerScript.Instance.CreateRelay();
+        }
         NetworkManager.Singleton.ConnectionApprovalCallback = ApprovalCheck;
         NetworkManager.Singleton.StartHost();
-
+        
     }
     private void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
     {
@@ -175,8 +191,15 @@ public class LoginManager : MonoBehaviour
     {
         chractorIDInputField.GetComponent<TMP_InputField>().text = num;
     }
-    public void Client()
-    {
+    public TMP_InputField joinCodeInputField;
+    public string joinCode;
+    public async void Client()
+    {   
+        joinCode = joinCodeInputField.GetComponent<TMP_InputField>().text;
+        if(RelayManagerScript.Instance.IsRelayEnabled && !string.IsNullOrEmpty(joinCode))
+        {
+            await RelayManagerScript.Instance.JoinRelay(joinCode);
+        }
         string userName = userNameInputField.GetComponent<TMP_InputField>().text;
         string password = passwordInputField.GetComponent<TMP_InputField>().text;
         string chractorID = chractorIDInputField.GetComponent<TMP_InputField>().text;
