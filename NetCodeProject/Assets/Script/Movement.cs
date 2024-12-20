@@ -117,9 +117,9 @@ public class Movement : NetworkBehaviour
          }
 
       }
-
+      
       UpdatePlayerinfo();
-      UpdateMaterial();
+      // UpdateMaterial();
    }
    [ClientRpc]
    private void TestClientRpc(string msg, ClientRpcParams clientRpcParams)

@@ -6,9 +6,16 @@ using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using QFSW.QC;
 using UnityEngine.Assertions.Must;
+using System.Security.Cryptography;
 public class LobbyScript : MonoBehaviour
 {
     Lobby hostLobby;
+    string playerName;
+    private void Start()
+    {
+        playerName = "MyName " + Random.Range(1, 9999);
+        Debug.Log("Player name = " + playerName);
+    }
     [Command]
     private async void CreateLobby()
     {
@@ -16,12 +23,25 @@ public class LobbyScript : MonoBehaviour
         {
             string lobbyName = "My lobby";
             int maxPlayers = 4;
-            CreateLobbyOptions options = new CreateLobbyOptions();
-            options.IsPrivate = false;
+            CreateLobbyOptions options = new CreateLobbyOptions()
+            {
+                IsPrivate = false,
+                Player = new Player()
+                {
+                    Data = new Dictionary<string, PlayerDataObject>{
+                        {"PlayerName",new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member,playerName)}
+                    }
+                },
+                Data = new Dictionary<string, DataObject>{
+                    {"GameMode",new DataObject(DataObject.VisibilityOptions.Public,"DeathMatch")}
+                }
+            };
+
             Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, options);
             hostLobby = lobby;
+            PrintPlayers(hostLobby);
             StartCoroutine(HeartbeatLobbyCoroutine(lobby.Id, 15));
-            Debug.Log("Create Lobby " + lobby.Name + "," + lobby.MaxPlayers +" , " + lobby.Id + " , " + lobby.LobbyCode);
+            Debug.Log("Create Lobby " + lobby.Name + "," + lobby.MaxPlayers + " , " + lobby.Id + " , " + lobby.LobbyCode);
         }
         catch (LobbyServiceException e)
         {
@@ -57,7 +77,7 @@ public class LobbyScript : MonoBehaviour
             Debug.Log("Lobby Found : " + lobbies.Results.Count);
             foreach (Lobby lobby in lobbies.Results)
             {
-                Debug.Log(lobby.Name + " , " + lobby.MaxPlayers);
+                Debug.Log(lobby.Name + " , " + lobby.MaxPlayers + " , " + lobby.Data["GameMode"].Value);
             }
 
         }
@@ -81,11 +101,21 @@ public class LobbyScript : MonoBehaviour
     {
         try
         {
-            await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
-            Debug.Log(" Joined by lobby code : " + lobbyCode);
-            
-                  
-        }catch (LobbyServiceException e)
+            // await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
+            // Debug.Log(" Joined by lobby code : " + lobbyCode);
+            JoinLobbyByCodeOptions options = new JoinLobbyByCodeOptions{
+                Player = new Player
+                {
+                    Data = new Dictionary<string, PlayerDataObject>{
+                        {"PlayerName",new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member,playerName)}
+                    }
+                }
+            };
+            Lobby joinLobby = await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyCode,options);
+            Debug.Log("Join by lobby code : " + lobbyCode);
+            PrintPlayers(joinLobby);
+        }
+        catch (LobbyServiceException e)
         {
             Debug.Log(e);
         }
@@ -101,6 +131,15 @@ public class LobbyScript : MonoBehaviour
         catch (LobbyServiceException e)
         {
             Debug.Log(e);
+        }
+    }
+    [Command]
+    public void PrintPlayers(Lobby lobby)
+    {   
+        Debug.Log("Lobby : " + lobby.Name + " / " + lobby.Data["JoinCodeKey"].Value);
+        foreach (Player player in lobby.Players)
+        {
+            Debug.Log(player.Id + " : " + player.Data["PlayerName"].Value);
         }
     }
 }
